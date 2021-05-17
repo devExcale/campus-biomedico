@@ -13,3 +13,4 @@
 - **Presidio** ( {id_prenotazione*, cod_m*} )
 - **Corso** ( {id_corso}, descrizione, data, ora_inizio, ora_fine )
 - **PartecipazioneCorso** ( {id_corso*, cod_m*} )
+- **Amministratore** ( {cod_f}, nome, cognome, data_n, email, cellulare, via_residenza, citta, cap, password )
