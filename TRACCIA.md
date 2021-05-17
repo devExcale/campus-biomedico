@@ -39,7 +39,7 @@ Camper prenotano gli esami sempre a nome del paziernte.
 
 Il personale amministrativo accede al Sito per la gestione di corsi, convegni e pagamento delle prestazioni effettuate.
 
-Il pewrsonale medico e quello amministrativo accede alla parte del Sito a loro riservato attraverso user e password.
+Il personale medico e quello amministrativo accede alla parte del Sito a loro riservato attraverso user e password.
 
 Si vogliono memorizzare le informazioni su:
 
@@ -81,24 +81,24 @@ Individui una soluzione che a suo motivato giudizio sia la più idonea a svilupp
 
 8. a progettazione della base di dati per la gestione delle informazioni relative ai medici, ai pazienti, alle
    prestazioni, alle prenotazioni e ai corsi e/o convegni in particolare si richiede:
-    - il modello concettuale E-R;
-    - il corrispondente modello logico relazionale;
+    1. il modello concettuale E-R;
+    2. il corrispondente modello logico relazionale;
 
 9. l’implementazione in linguaggio SQL della base di dati progettata;
 
 10. lo sviluppo in linguaggio SQL delle query che consentono di:
-    - visualizzare cognome e nome dei pazienti prenotati dal 01-05-2021 al 31-05-2021, per una prestazione specificata
-      attraverso il codice, l’elenco è ordinato per cognome in modo crescente;
-    - visualizzare per ogni corso di aggiornamento il codice, la descrizione e il numero di corsisti;
-    - visualizzare il tipo della prestazione con il maggior numero di prenotazioni;
-    - visualizzare per ogni medico il cognome, il nome e la data in cui hanno visitato più di 10 pazienti. L’elenco è
-      ordinato, in modo crescente, per cognome e per data;
+    1. visualizzare cognome e nome dei pazienti prenotati dal 01-05-2021 al 31-05-2021, per una prestazione specificata
+    2. attraverso il codice, l’elenco è ordinato per cognome in modo crescente;
+    3. visualizzare per ogni corso di aggiornamento il codice, la descrizione e il numero di corsisti;
+    4. visualizzare il tipo della prestazione con il maggior numero di prenotazioni;
+    5. visualizzare per ogni medico il cognome, il nome e la data in cui hanno visitato più di 10 pazienti. L’elenco è
+       ordinato, in modo crescente, per cognome e per data;
 
 11. il progetto attraverso wireframe del sito web del Campus Bio-Medico ed in particolare delle pagine web che
     consentono le seguenti funzioni:
-    - la registrazione dei pazienti;
-    - la prenotazione delle prestazioni da parte dei pazienti con relativo invio dell'email di conferma;
-    - la visualizzazione della lista dei pazienti prenotati in una determinata data da parte del personale medico;
-    - l'inserimento dell'anamnesi per un determinato paziente;
+    1. la registrazione dei pazienti;
+    2. la prenotazione delle prestazioni da parte dei pazienti con relativo invio dell'email di conferma;
+    3. la visualizzazione della lista dei pazienti prenotati in una determinata data da parte del personale medico;
+    4. l'inserimento dell'anamnesi per un determinato paziente;
 
 12. la codifica delle pagine individuate nei linguaggi più idonei.
