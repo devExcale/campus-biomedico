@@ -2,7 +2,7 @@
 
 ## Schema E/R
 
-![Diagramma E-R](/img/Diagramma E-R.png)
+![Diagramma E-R](img/Diagramma E-R.png)
 
 ## Modello logico relazionale
 
