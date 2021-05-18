@@ -3,6 +3,7 @@
 ## Diagramma E/R
 
 ![Diagramma E/R](./img/Diagramma E-R.png)
+<img src="img/Diagramma E-R.png" alt="Immagine diagramma E/R"/>
 
 ## Modello logico relazionale
 
