@@ -1,7 +1,8 @@
-### Legenda
+# Analisi
 
-- _attributo\*_ (con l'asterisco) è FK
-- _\{attributo1, \[attributo2...\]\}_ ciò all'interno delle graffe è PK
+## Schema E/R
+
+![Diagramma E/R](/img/Diagramma E-R.png)
 
 ## Modello logico relazionale
 
@@ -14,3 +15,8 @@
 - **Corso** ( {id_corso}, descrizione, data, ora_inizio, ora_fine )
 - **PartecipazioneCorso** ( {id_corso*, cod_m*} )
 - **Amministratore** ( {cod_f}, nome, cognome, data_n, email, cellulare, via_residenza, citta, cap, password )
+
+### Legenda
+
+- _attributo\*_ (con l'asterisco) è FK
+- _\{attributo1, \[attributo2...\]\}_ ciò all'interno delle graffe è PK
