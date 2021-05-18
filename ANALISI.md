@@ -1,13 +1,19 @@
 # Analisi
 
+### Ipotesi
+
+- I pazienti, medici e amministratori possono effettuare il login sulla piattaforma attraverso il codice fiscale e la
+  password;
+- Ad una visita (prenotazione) possono presiedere più medici;
+- Al paziente vengono registrate più anamnesi nel tempo;
+
 ## Diagramma E/R
 
-![Diagramma E/R](./img/Diagramma E-R.png)
 <img src="img/Diagramma E-R.png" alt="Immagine diagramma E/R"/>
 
 ## Modello logico relazionale
 
-- **Paziente** ( {cod_f}, nome, cognome, data_n, email, cellulare, via_residenza, citta, cap )
+- **Paziente** ( {cod_f}, nome, cognome, data_n, email, cellulare, via_residenza, citta, cap, password )
 - **Anamnesi** ( {id_anamnesi}, descrizione, data, cod_f* )
 - **Prestazione** ( {id_prestazione}, costo, descrizione )
 - **Medico** ( {cod_f}, nome, cognome, data_n, email, cellulare, via_residenza, citta, cap, password )
