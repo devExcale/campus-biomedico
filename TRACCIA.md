@@ -88,10 +88,10 @@ Individui una soluzione che a suo motivato giudizio sia la più idonea a svilupp
 
 10. lo sviluppo in linguaggio SQL delle query che consentono di:
     1. visualizzare cognome e nome dei pazienti prenotati dal 01-05-2021 al 31-05-2021, per una prestazione specificata
-    2. attraverso il codice, l’elenco è ordinato per cognome in modo crescente;
-    3. visualizzare per ogni corso di aggiornamento il codice, la descrizione e il numero di corsisti;
-    4. visualizzare il tipo della prestazione con il maggior numero di prenotazioni;
-    5. visualizzare per ogni medico il cognome, il nome e la data in cui hanno visitato più di 10 pazienti. L’elenco è
+       attraverso il codice, l’elenco è ordinato per cognome in modo crescente;
+    2. visualizzare per ogni corso di aggiornamento il codice, la descrizione e il numero di corsisti;
+    3. visualizzare il tipo della prestazione con il maggior numero di prenotazioni;
+    4. visualizzare per ogni medico il cognome, il nome e la data in cui hanno visitato più di 10 pazienti. L’elenco è
        ordinato, in modo crescente, per cognome e per data;
 
 11. il progetto attraverso wireframe del sito web del Campus Bio-Medico ed in particolare delle pagine web che
