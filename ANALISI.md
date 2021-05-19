@@ -37,7 +37,7 @@ Si sceglie di implementare il database usando il RDBMS PostgreSQL, di conseguenz
 
 ### TABELLA `paziente`
 
-```postgresql
+```sql
 CREATE TABLE paziente (
     cod_f         char(16) PRIMARY KEY,
     nome          varchar(32) NOT NULL,
