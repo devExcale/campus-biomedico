@@ -196,7 +196,7 @@ GROUP BY c.id_corso, c.descrizione;
 *Visualizzare il tipo della prestazione con il maggior numero di prenotazioni.*
 
 ```sql
-SELECT p.id_prestazione, p.descrizione
+SELECT p.id_prestazione, p.descrizione, t.n_prenotazioni
 FROM prestazione p
          INNER JOIN (
     SELECT id_prestazione, count(id_prenotazione) n_prenotazioni
