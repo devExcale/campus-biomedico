@@ -1,4 +1,4 @@
-# Analisi DB
+# <div align="center">Analisi DB</div>
 
 ## Ipotesi
 
@@ -18,7 +18,7 @@
 
 - **Paziente** ( <ins>cod_f</ins>, nome, cognome, data_n, email, cellulare, via_residenza, citta, cap, password )
 - **Anamnesi** ( <ins>id_anamnesi</ins>, descrizione, data, cod_f* )
-- **Prestazione** ( <ins>id_prestazione</ins>, costo, descrizione )
+- **Prestazione** ( <ins>id_prestazione</ins>, denominazione, costo, descrizione )
 - **Medico** ( <ins>cod_f</ins>, nome, cognome, data_n, email, cellulare, via_residenza, citta, cap, password )
 - **Prenotazione** ( <ins>id_prenotazione</ins>, data, ora, cod_p*, id_prestazione* )
 - **Presidio** ( <ins>id_prenotazione*, cod_m*</ins> )
@@ -70,8 +70,9 @@ CREATE TABLE anamnesi (
 ```sql
 CREATE TABLE prestazione (
     id_prestazione serial PRIMARY KEY,
-    descrizione    varchar(32),
-    costo          float NOT NULL
+    denominazione  varchar(32) NOT NULL,
+    costo          float       NOT NULL,
+    descrizione    text        NOT NULL
 );
 ```
 
@@ -196,13 +197,13 @@ GROUP BY c.id_corso, c.descrizione;
 *Visualizzare il tipo della prestazione con il maggior numero di prenotazioni.*
 
 ```sql
-SELECT p.id_prestazione, p.descrizione, t.n_prenotazioni
+SELECT p.id_prestazione, p.denominazione, t.n_prenotazioni
 FROM prestazione p
          INNER JOIN (
     SELECT id_prestazione, count(id_prenotazione) n_prenotazioni
     FROM prenotazione p
     GROUP BY id_prestazione) t ON p.id_prestazione = t.id_prestazione
-GROUP BY p.id_prestazione, p.descrizione
+GROUP BY p.id_prestazione, p.denominazione
 HAVING t.n_prenotazioni = MAX(t.n_prenotazioni);
 ```
 

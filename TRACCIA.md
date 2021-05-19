@@ -35,7 +35,7 @@ L'attività del Campus Bio-Medico viene gestita attraverso il Sito web a cui acc
 amministrativo. I pazienti possono prenotare le varie prestazioni direttamente sul Sito previa registrazione. Una volta
 fatta la prenotazione riceveranno una email di conferma con l'indicazione di data e ora. Il personale medico accede al
 Sito per controllare la lista dei pazienti del giorno e per inserire le anamnesi. I medici che sono all'interno del
-Camper prenotano gli esami sempre a nome del paziernte.
+Camper prenotano gli esami sempre a nome del paziente.
 
 Il personale amministrativo accede al Sito per la gestione di corsi, convegni e pagamento delle prestazioni effettuate.
 
@@ -43,10 +43,10 @@ Il personale medico e quello amministrativo accede alla parte del Sito a loro ri
 
 Si vogliono memorizzare le informazioni su:
 
-- Medici: anagrafica, email, cell.
-- Pazienti: anagrafica, anamnesi, email, cell.
-- Prestazioni: codice, tipo (visita medica, analisi, radiografia, ecc), costo
-- Prenotazioni: codice, data e ora della visita
+- Medici: anagrafica, email, cellulare;
+- Pazienti: anagrafica, anamnesi, email, cellulare;
+- Prestazioni: codice, tipo (visita medica, analisi, radiografia, ecc), costo;
+- Prenotazioni: codice, data e ora della visita;
 - Corsi e convegni: codice, descrizione, data, ora inizio ed ora fine.
 
 Il candidato analizzi la realtà di riferimento, fornendo anche uno schema che evidenzi le principali funzionalità del
