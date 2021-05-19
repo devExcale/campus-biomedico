@@ -162,3 +162,61 @@ CREATE TABLE amministrazione (
     password      varchar(32) NOT NULL
 );
 ```
+
+## Queries
+
+### Query 1.
+
+*Visualizzare cognome e nome dei pazienti prenotati dal 01-05-2021 al 31-05-2021, per una prestazione specificata
+attraverso il codice, l’elenco è ordinato per cognome in modo crescente.*
+
+```sql
+SELECT DISTINCT pa.nome, pa.cognome
+FROM paziente pa
+         INNER JOIN prenotazione pr on pa.cod_f = pr.cod_p
+WHERE pr.data >= '2021-05-01'
+  AND pr.data <= '2021-05-31'
+  AND pr.id_prestazione = ?
+ORDER BY cognome;
+```
+
+### Query 2.
+
+*Visualizzare per ogni corso di aggiornamento il codice, la descrizione e il numero di corsisti.*
+
+```sql
+SELECT c.id_corso, c.descrizione, count(pc.cod_m) n_corsisti
+FROM corso c
+         INNER JOIN partecipazione_corso pc on c.id_corso = pc.id_corso
+GROUP BY c.id_corso, c.descrizione;
+```
+
+### Query 3.
+
+*Visualizzare il tipo della prestazione con il maggior numero di prenotazioni.*
+
+```sql
+SELECT p.id_prestazione, p.descrizione
+FROM prestazione p
+         INNER JOIN (
+    SELECT id_prestazione, count(id_prenotazione) n_prenotazioni
+    FROM prenotazione p
+    GROUP BY id_prestazione) t ON p.id_prestazione = t.id_prestazione
+GROUP BY p.id_prestazione, p.descrizione
+HAVING t.n_prenotazioni = MAX(t.n_prenotazioni);
+```
+
+### Query 4.
+
+*Visualizzare per ogni medico il cognome, il nome e la data in cui hanno visitato più di 10 pazienti. L’elenco è
+ordinato, in modo crescente, per cognome e per data.*
+
+```sql
+SELECT m.cognome, m.nome, pn.data, count(pn.id_prenotazione) n_visite
+FROM medico m
+         INNER JOIN presidio ps on m.cod_f = ps.cod_m
+         INNER JOIN prenotazione pn on pn.id_prenotazione = ps.id_prenotazione
+GROUP BY m.cognome, m.nome, pn.data
+HAVING count(pn.id_prenotazione) > 10
+ORDER BY m.cognome, m.nome, pn.data;
+```
