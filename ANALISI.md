@@ -13,7 +13,7 @@
 
 ## Modello logico relazionale
 
-- **Paziente** ( {cod_f}, nome, cognome, data_n, email, cellulare, via_residenza, citta, cap, password )
+- **Paziente** ( <u>cod_f</u>, nome, cognome, data_n, email, cellulare, via_residenza, citta, cap, password )
 - **Anamnesi** ( {id_anamnesi}, descrizione, data, cod_f* )
 - **Prestazione** ( {id_prestazione}, costo, descrizione )
 - **Medico** ( {cod_f}, nome, cognome, data_n, email, cellulare, via_residenza, citta, cap, password )
