@@ -1,4 +1,4 @@
-package it.edu.faraday.campusbiomedico;
+package it.edu.faraday.campus_biomedico;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

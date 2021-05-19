@@ -1,4 +1,4 @@
-package it.edu.faraday.campusbiomedico;
+package it.edu.faraday.campus_biomedico;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
