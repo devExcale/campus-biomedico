@@ -54,7 +54,7 @@ CREATE TABLE paziente (
 
 ### TABELLA `anamnesi`
 
-```postgresql
+```sql
 CREATE TABLE anamnesi (
     id_anamnesi serial PRIMARY KEY,
     descrizione text                      NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE anamnesi (
 
 ### TABELLA `prestazione`
 
-```postgresql
+```sql
 CREATE TABLE prestazione (
     id_prestazione serial PRIMARY KEY,
     descrizione    varchar(32),
@@ -77,7 +77,7 @@ CREATE TABLE prestazione (
 
 ### TABELLA `medico`
 
-```postgresql
+```sql
 CREATE TABLE medico (
     cod_f         char(16) PRIMARY KEY,
     nome          varchar(32) NOT NULL,
@@ -94,7 +94,7 @@ CREATE TABLE medico (
 
 ### TABELLA `prenotazione`
 
-```postgresql
+```sql
 CREATE TABLE prenotazione (
     id_prenotazione serial PRIMARY KEY,
     data            timestamp NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE prenotazione (
 
 ### TABELLA `presidio`
 
-```postgresql
+```sql
 CREATE TABLE presidio (
     id_prenotazione integer  NOT NULL,
     cod_m           char(16) NOT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE presidio (
 
 ### TABELLA `corso`
 
-```postgresql
+```sql
 CREATE TABLE corso (
     id_corso    serial PRIMARY KEY,
     descrizione text      NOT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE corso (
 
 ### TABELLA `partecipazione_corso`
 
-```postgresql
+```sql
 CREATE TABLE partecipazione_corso (
     id_corso integer  NOT NULL,
     cod_m    char(16) NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE partecipazione_corso (
 
 ### TABELLA `amministrazione`
 
-```postgresql
+```sql
 CREATE TABLE amministrazione (
     cod_f         char(16) PRIMARY KEY,
     nome          varchar(32) NOT NULL,
