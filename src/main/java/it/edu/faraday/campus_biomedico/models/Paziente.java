@@ -13,31 +13,33 @@ public class Paziente {
 	@Column(name = "cod_f")
 	private String codiceFiscale;
 
-	@Basic
+	@Basic(optional = false)
 	private String nome;
 
-	@Basic
+	@Basic(optional = false)
 	private String cognome;
 
+	@Basic(optional = false)
 	@Column(name = "data_n")
 	private Date dataNascita;
 
-	@Basic
+	@Basic(optional = false)
 	private String email;
 
-	@Basic
+	@Basic(optional = false)
 	private String cellulare;
 
+	@Basic(optional = true)
 	@Column(name = "via_residenza")
 	private String viaResidenza;
 
-	@Basic
+	@Basic(optional = true)
 	private String citta;
 
-	@Basic
+	@Basic(optional = true)
 	private String cap;
 
-	@Basic
+	@Basic(optional = false)
 	private String password;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "paziente")
