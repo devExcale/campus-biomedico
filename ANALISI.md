@@ -39,16 +39,16 @@ Si sceglie di implementare il database usando il RDBMS PostgreSQL, di conseguenz
 
 ```sql
 CREATE TABLE paziente (
-    cod_f         char(16) PRIMARY KEY,
-    nome          varchar(32) NOT NULL,
-    cognome       varchar(32) NOT NULL,
-    data_n        date        NOT NULL,
-    email         varchar(48) NOT NULL,
-    cellulare     varchar(14) NOT NULL,
-    via_residenza varchar(48),
-    citta         varchar(24),
-    cap           char(5),
-    password      varchar(32) NOT NULL
+	cod_f         char(16) PRIMARY KEY,
+	nome          varchar(32) NOT NULL,
+	cognome       varchar(32) NOT NULL,
+	data_n        date        NOT NULL,
+	email         varchar(48) NOT NULL,
+	cellulare     varchar(14) NOT NULL,
+	via_residenza varchar(48),
+	citta         varchar(24),
+	cap           char(5),
+	password      varchar(32) NOT NULL
 );
 ```
 
@@ -56,12 +56,12 @@ CREATE TABLE paziente (
 
 ```sql
 CREATE TABLE anamnesi (
-    id_anamnesi serial PRIMARY KEY,
-    descrizione text                      NOT NULL,
-    data        date default CURRENT_DATE NOT NULL,
-    cod_p       char(16)                  NOT NULL,
-    FOREIGN KEY (cod_p) REFERENCES paziente
-        ON UPDATE CASCADE ON DELETE CASCADE
+	id_anamnesi serial PRIMARY KEY,
+	descrizione text                      NOT NULL,
+	data        date default CURRENT_DATE NOT NULL,
+	cod_p       char(16)                  NOT NULL,
+	FOREIGN KEY (cod_p) REFERENCES paziente
+		ON UPDATE CASCADE ON DELETE CASCADE
 );
 ```
 
@@ -69,10 +69,10 @@ CREATE TABLE anamnesi (
 
 ```sql
 CREATE TABLE prestazione (
-    id_prestazione serial PRIMARY KEY,
-    denominazione  varchar(32) NOT NULL,
-    costo          float       NOT NULL,
-    descrizione    text        NOT NULL
+	id_prestazione serial PRIMARY KEY,
+	denominazione  varchar(32) NOT NULL,
+	costo          float       NOT NULL,
+	descrizione    text        NOT NULL
 );
 ```
 
@@ -80,16 +80,16 @@ CREATE TABLE prestazione (
 
 ```sql
 CREATE TABLE medico (
-    cod_f         char(16) PRIMARY KEY,
-    nome          varchar(32) NOT NULL,
-    cognome       varchar(32) NOT NULL,
-    data_n        date        NOT NULL,
-    email         varchar(48) NOT NULL,
-    cellulare     varchar(14) NOT NULL,
-    via_residenza varchar(48),
-    citta         varchar(24),
-    cap           char(5),
-    password      varchar(32) NOT NULL
+	cod_f         char(16) PRIMARY KEY,
+	nome          varchar(32) NOT NULL,
+	cognome       varchar(32) NOT NULL,
+	data_n        date        NOT NULL,
+	email         varchar(48) NOT NULL,
+	cellulare     varchar(14) NOT NULL,
+	via_residenza varchar(48),
+	citta         varchar(24),
+	cap           char(5),
+	password      varchar(32) NOT NULL
 );
 ```
 
@@ -97,14 +97,14 @@ CREATE TABLE medico (
 
 ```sql
 CREATE TABLE prenotazione (
-    id_prenotazione serial PRIMARY KEY,
-    data            timestamp NOT NULL,
-    cod_p           char(16)  NOT NULL,
-    id_prestazione  integer   NOT NULL,
-    FOREIGN KEY (cod_p) REFERENCES paziente
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (id_prestazione) REFERENCES prestazione
-        ON UPDATE CASCADE ON DELETE CASCADE
+	id_prenotazione serial PRIMARY KEY,
+	data            timestamp NOT NULL,
+	cod_p           char(16)  NOT NULL,
+	id_prestazione  integer   NOT NULL,
+	FOREIGN KEY (cod_p) REFERENCES paziente
+		ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (id_prestazione) REFERENCES prestazione
+		ON UPDATE CASCADE ON DELETE CASCADE
 );
 ```
 
@@ -112,13 +112,13 @@ CREATE TABLE prenotazione (
 
 ```sql
 CREATE TABLE presidio (
-    id_prenotazione integer  NOT NULL,
-    cod_m           char(16) NOT NULL,
-    PRIMARY KEY (id_prenotazione, cod_m),
-    FOREIGN KEY (id_prenotazione) REFERENCES prenotazione
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (cod_m) REFERENCES medico
-        ON UPDATE CASCADE ON DELETE CASCADE
+	id_prenotazione integer  NOT NULL,
+	cod_m           char(16) NOT NULL,
+	PRIMARY KEY (id_prenotazione, cod_m),
+	FOREIGN KEY (id_prenotazione) REFERENCES prenotazione
+		ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (cod_m) REFERENCES medico
+		ON UPDATE CASCADE ON DELETE CASCADE
 );
 ```
 
@@ -126,10 +126,11 @@ CREATE TABLE presidio (
 
 ```sql
 CREATE TABLE corso (
-    id_corso    serial PRIMARY KEY,
-    descrizione text      NOT NULL,
-    ora_inizio  timestamp NOT NULL,
-    ora_fine    timestamp NOT NULL
+	id_corso    serial PRIMARY KEY,
+	titolo      varchar(64) NOT NULL UNIQUE,
+	descrizione text        NOT NULL,
+	ora_inizio  timestamp   NOT NULL,
+	ora_fine    timestamp   NOT NULL
 );
 ```
 
@@ -137,13 +138,13 @@ CREATE TABLE corso (
 
 ```sql
 CREATE TABLE partecipazione_corso (
-    id_corso integer  NOT NULL,
-    cod_m    char(16) NOT NULL,
-    PRIMARY KEY (id_corso, cod_m),
-    FOREIGN KEY (id_corso) REFERENCES corso
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (cod_m) REFERENCES medico
-        ON UPDATE CASCADE ON DELETE CASCADE
+	id_corso integer  NOT NULL,
+	cod_m    char(16) NOT NULL,
+	PRIMARY KEY (id_corso, cod_m),
+	FOREIGN KEY (id_corso) REFERENCES corso
+		ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (cod_m) REFERENCES medico
+		ON UPDATE CASCADE ON DELETE CASCADE
 );
 ```
 
@@ -151,16 +152,16 @@ CREATE TABLE partecipazione_corso (
 
 ```sql
 CREATE TABLE amministrazione (
-    cod_f         char(16) PRIMARY KEY,
-    nome          varchar(32) NOT NULL,
-    cognome       varchar(32) NOT NULL,
-    data_n        date        NOT NULL,
-    email         varchar(48) NOT NULL,
-    cellulare     varchar(14) NOT NULL,
-    via_residenza varchar(48),
-    citta         varchar(24),
-    cap           char(5),
-    password      varchar(32) NOT NULL
+	cod_f         char(16) PRIMARY KEY,
+	nome          varchar(32) NOT NULL,
+	cognome       varchar(32) NOT NULL,
+	data_n        date        NOT NULL,
+	email         varchar(48) NOT NULL,
+	cellulare     varchar(14) NOT NULL,
+	via_residenza varchar(48),
+	citta         varchar(24),
+	cap           char(5),
+	password      varchar(32) NOT NULL
 );
 ```
 
@@ -174,7 +175,7 @@ attraverso il codice, l’elenco è ordinato per cognome in modo crescente.*
 ```sql
 SELECT DISTINCT pa.nome, pa.cognome
 FROM paziente pa
-         INNER JOIN prenotazione pr on pa.cod_f = pr.cod_p
+		 INNER JOIN prenotazione pr on pa.cod_f = pr.cod_p
 WHERE pr.data >= '2021-05-01'
   AND pr.data <= '2021-05-31'
   AND pr.id_prestazione = ?
@@ -188,7 +189,7 @@ ORDER BY cognome;
 ```sql
 SELECT c.id_corso, c.descrizione, count(pc.cod_m) n_corsisti
 FROM corso c
-         INNER JOIN partecipazione_corso pc on c.id_corso = pc.id_corso
+		 INNER JOIN partecipazione_corso pc on c.id_corso = pc.id_corso
 GROUP BY c.id_corso, c.descrizione;
 ```
 
@@ -199,10 +200,10 @@ GROUP BY c.id_corso, c.descrizione;
 ```sql
 SELECT p.id_prestazione, p.denominazione, t.n_prenotazioni
 FROM prestazione p
-         INNER JOIN (
-    SELECT id_prestazione, count(id_prenotazione) n_prenotazioni
-    FROM prenotazione p
-    GROUP BY id_prestazione) t ON p.id_prestazione = t.id_prestazione
+		 INNER JOIN (
+	SELECT id_prestazione, count(id_prenotazione) n_prenotazioni
+	FROM prenotazione p
+	GROUP BY id_prestazione) t ON p.id_prestazione = t.id_prestazione
 GROUP BY p.id_prestazione, p.denominazione
 HAVING t.n_prenotazioni = MAX(t.n_prenotazioni);
 ```
@@ -215,8 +216,8 @@ ordinato, in modo crescente, per cognome e per data.*
 ```sql
 SELECT m.cognome, m.nome, pn.data, count(pn.id_prenotazione) n_visite
 FROM medico m
-         INNER JOIN presidio ps on m.cod_f = ps.cod_m
-         INNER JOIN prenotazione pn on pn.id_prenotazione = ps.id_prenotazione
+		 INNER JOIN presidio ps on m.cod_f = ps.cod_m
+		 INNER JOIN prenotazione pn on pn.id_prenotazione = ps.id_prenotazione
 GROUP BY m.cognome, m.nome, pn.data
 HAVING count(pn.id_prenotazione) > 10
 ORDER BY m.cognome, m.nome, pn.data;

@@ -2,12 +2,10 @@ package it.edu.faraday.campus_biomedico.models;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
-import java.util.Set;
 
 @Entity
-@Table(name = "paziente")
-public class Paziente {
+@Table(name = "amministratore")
+public class Amministratore {
 
 	@Id
 	@Column(name = "cod_f")
@@ -40,20 +38,14 @@ public class Paziente {
 	@Basic
 	private String password;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "paziente")
-	private List<Anamnesi> anamnesi;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "paziente")
-	private Set<Prenotazione> prenotazioni;
-
-	public Paziente() {
+	public Amministratore() {
 	}
 
 	public String getCodiceFiscale() {
 		return codiceFiscale;
 	}
 
-	public Paziente setCodiceFiscale(String codiceFiscale) {
+	public Amministratore setCodiceFiscale(String codiceFiscale) {
 		this.codiceFiscale = codiceFiscale;
 		return this;
 	}
@@ -62,7 +54,7 @@ public class Paziente {
 		return nome;
 	}
 
-	public Paziente setNome(String nome) {
+	public Amministratore setNome(String nome) {
 		this.nome = nome;
 		return this;
 	}
@@ -71,7 +63,7 @@ public class Paziente {
 		return cognome;
 	}
 
-	public Paziente setCognome(String cognome) {
+	public Amministratore setCognome(String cognome) {
 		this.cognome = cognome;
 		return this;
 	}
@@ -80,7 +72,7 @@ public class Paziente {
 		return dataNascita;
 	}
 
-	public Paziente setDataNascita(Date dataNascita) {
+	public Amministratore setDataNascita(Date dataNascita) {
 		this.dataNascita = dataNascita;
 		return this;
 	}
@@ -89,7 +81,7 @@ public class Paziente {
 		return email;
 	}
 
-	public Paziente setEmail(String email) {
+	public Amministratore setEmail(String email) {
 		this.email = email;
 		return this;
 	}
@@ -98,7 +90,7 @@ public class Paziente {
 		return cellulare;
 	}
 
-	public Paziente setCellulare(String cellulare) {
+	public Amministratore setCellulare(String cellulare) {
 		this.cellulare = cellulare;
 		return this;
 	}
@@ -107,7 +99,7 @@ public class Paziente {
 		return viaResidenza;
 	}
 
-	public Paziente setViaResidenza(String viaResidenza) {
+	public Amministratore setViaResidenza(String viaResidenza) {
 		this.viaResidenza = viaResidenza;
 		return this;
 	}
@@ -116,7 +108,7 @@ public class Paziente {
 		return citta;
 	}
 
-	public Paziente setCitta(String citta) {
+	public Amministratore setCitta(String citta) {
 		this.citta = citta;
 		return this;
 	}
@@ -125,7 +117,7 @@ public class Paziente {
 		return cap;
 	}
 
-	public Paziente setCap(String cap) {
+	public Amministratore setCap(String cap) {
 		this.cap = cap;
 		return this;
 	}
@@ -134,26 +126,8 @@ public class Paziente {
 		return password;
 	}
 
-	public Paziente setPassword(String password) {
+	public Amministratore setPassword(String password) {
 		this.password = password;
-		return this;
-	}
-
-	public List<Anamnesi> getAnamnesi() {
-		return anamnesi;
-	}
-
-	public Paziente setAnamnesi(List<Anamnesi> anamnesi) {
-		this.anamnesi = anamnesi;
-		return this;
-	}
-
-	public Set<Prenotazione> getPrenotazioni() {
-		return prenotazioni;
-	}
-
-	public Paziente setPrenotazioni(Set<Prenotazione> prenotazioni) {
-		this.prenotazioni = prenotazioni;
 		return this;
 	}
 
