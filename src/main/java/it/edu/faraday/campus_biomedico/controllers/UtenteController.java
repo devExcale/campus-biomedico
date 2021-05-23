@@ -2,13 +2,17 @@ package it.edu.faraday.campus_biomedico.controllers;
 
 import it.edu.faraday.campus_biomedico.models.Paziente;
 import it.edu.faraday.campus_biomedico.repositories.PazienteRepository;
+import it.edu.faraday.campus_biomedico.utils.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.View;
-import org.thymeleaf.spring5.view.ThymeleafView;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.io.UnsupportedEncodingException;
+
+import static it.edu.faraday.campus_biomedico.CampusBiomedicoApplication.encode;
 
 @Controller
 @RequestMapping("/paziente")
@@ -18,26 +22,41 @@ public class UtenteController {
 	private PazienteRepository pazienteRepo;
 
 	@GetMapping("/registrati")
-	private View registrati_view() {
-		return new ThymeleafView("utente/registrazione");
+	private ModelAndView registrati_view(Alert alert) {
+
+		ModelAndView mav = new ModelAndView("paziente/registrazione");
+
+		if(alert.getMessage() != null)
+			mav.addObject("alert", alert);
+
+		return mav;
 	}
 
+	@SuppressWarnings("SpringMVCViewInspection")
 	@PostMapping("/registrati/submit")
-	private String registrati_submit(Paziente paziente) {
-		// TODO
-		return "redirect:/home";
+	private String registrati_submit(Paziente paziente) throws UnsupportedEncodingException {
+
+		boolean esiste = pazienteRepo.findById(paziente.getCodiceFiscale())
+				.isPresent();
+
+		if(esiste)
+			return "redirect:/paziente/registrati?message=" + encode("Utente già registrato") + "&type=danger";
+
+		pazienteRepo.save(paziente);
+
+		return "redirect:/paziente/login?message=" + encode("Utente registrato con successo") + "&type=success";
 	}
 
 	@GetMapping("/login")
-	private View login_view() {
+	private ModelAndView login_view() {
 		// TODO: check already logged in
-		return new ThymeleafView("utente/login");
+		return new ModelAndView("paziente/login");
 	}
 
 	@PostMapping("/login/submit")
 	private String login_submit() {
 		// TODO
-		return "redirect:/utente/home";
+		return "redirect:/paziente/home";
 	}
 
 }
