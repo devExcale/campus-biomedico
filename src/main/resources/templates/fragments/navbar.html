@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Navbar</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+				integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+				crossorigin="anonymous">
+	</head>
+	<body>
+
+		<div th:fragment="navbar" class="btn-group">
+
+			<a class="btn btn-primary" href="/home">Homepage</a>
+
+			<!-- Paziente -->
+			<div class="btn-group" role="group">
+				<button class="btn btn-primary dropdown-toggle"
+						data-toggle="dropdown">
+					Paziente
+				</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/paziente/accedi">Accedi</a>
+					<a class="dropdown-item" href="/paziente/registrati">Registrati</a>
+				</div>
+			</div>
+
+			<!-- Medico -->
+			<div class="btn-group" role="group">
+				<button class="btn btn-primary dropdown-toggle"
+						data-toggle="dropdown">
+					Medico
+				</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/medico/accedi">Accedi</a>
+				</div>
+			</div>
+
+			<!-- Amministratore -->
+			<div class="btn-group" role="group">
+				<button class="btn btn-primary dropdown-toggle"
+						data-toggle="dropdown">
+					Amministratore
+				</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/amministratore/accedi">Accedi</a>
+				</div>
+			</div>
+
+		</div>
+
+	</body>
+</html>

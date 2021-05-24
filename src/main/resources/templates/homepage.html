@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 	<head>
 		<meta charset="UTF-8">
-		<title>Homepage</title>
+		<title>Campus Bio-Medico Rosalind Franklin</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+				integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+				crossorigin="anonymous">
 	</head>
-	<body>
+	<body class="container-fluid row">
+		<div class="col-3"></div>
 
+		<div class="col">
+			<div class="jumbotron">
+				<h1 class="display-4"><b>Rosalind Franklin</b></h1>
+				<p class="lead">Campus Bio-Medico</p>
+				<hr class="my-4">
+
+				<!-- Area Pazienti -->
+				<div class="row">
+					<h1 class="d-inline my-auto col-8">Area Pazienti</h1>
+					<div class="d-flex justify-content-start align-items-center">
+						<a class="btn btn-lg btn-primary m-2" href="/paziente/accedi">Accedi</a>
+						<a class="btn btn-lg btn-primary m-2" href="/paziente/registrati">Registrati</a>
+					</div>
+				</div>
+
+				<!-- Area Medici -->
+				<div class="row">
+					<h1 class="d-inline my-auto col-8">Area Medici</h1>
+					<div class="d-flex justify-content-start align-items-center">
+						<a class="btn btn-lg btn-primary m-2" href="/medico/accedi">Accedi</a>
+					</div>
+				</div>
+
+				<!-- Area Amministratori -->
+				<div class="row">
+					<h1 class="d-inline my-auto col-8">Area Amministratori</h1>
+					<div class="d-flex justify-content-start align-items-center">
+						<a class="btn btn-lg btn-primary m-2" href="/amministratore/accedi">Accedi</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="col-3"></div>
 	</body>
 </html>
