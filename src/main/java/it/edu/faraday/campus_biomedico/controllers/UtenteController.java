@@ -1,7 +1,11 @@
 package it.edu.faraday.campus_biomedico.controllers;
 
 import it.edu.faraday.campus_biomedico.models.Paziente;
+import it.edu.faraday.campus_biomedico.models.Prenotazione;
+import it.edu.faraday.campus_biomedico.models.Prestazione;
 import it.edu.faraday.campus_biomedico.repositories.PazienteRepository;
+import it.edu.faraday.campus_biomedico.repositories.PrenotazioneRepository;
+import it.edu.faraday.campus_biomedico.repositories.PrestazioneRepository;
 import it.edu.faraday.campus_biomedico.utils.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,17 +18,41 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static it.edu.faraday.campus_biomedico.CampusBiomedicoApplication.encode;
+import static it.edu.faraday.campus_biomedico.CampusBiomedicoApplication.getLogger;
 
 @Controller
 @RequestMapping("/paziente")
 public class UtenteController {
 
-	@Autowired private PazienteRepository pazienteRepo;
+	private static final String COOKIE_UTENTE = "paziente.cod";
+	private static final String COOKIE_SESSIONE = "paziente.id_sessione";
 
-	@GetMapping("/registrati") private ModelAndView registrati_view(Alert alert) {
+	@Autowired
+	private PazienteRepository pazienteRepo;
+
+	@Autowired
+	private PrenotazioneRepository prenotazioneRepo;
+
+	@Autowired
+	private PrestazioneRepository prestazioneRepo;
+
+	private final DateFormat timestampFormatter;
+
+	public UtenteController() {
+		timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	}
+
+	@GetMapping("/registrati")
+	private ModelAndView registrati_view(Alert alert) {
 
 		ModelAndView mav = new ModelAndView("paziente/registrazione");
 
@@ -38,7 +66,8 @@ public class UtenteController {
 		return mav;
 	}
 
-	@SuppressWarnings("SpringMVCViewInspection") @PostMapping("/registrati/submit")
+	@SuppressWarnings("SpringMVCViewInspection")
+	@PostMapping("/registrati/submit")
 	private String registrati_submit(Paziente paziente) {
 
 		boolean esiste = pazienteRepo.findById(paziente.getCodiceFiscale())
@@ -54,15 +83,15 @@ public class UtenteController {
 
 	@GetMapping("/accedi")
 	private String accedi_view(Alert alert, Model model, HttpServletResponse response,
-			@CookieValue(name = "paziente.cod_f", required = false) String codUtente,
-			@CookieValue(name = "paziente.id_sessione", required = false) Long sessione) {
+			@CookieValue(name = COOKIE_UTENTE, required = false) String codUtente,
+			@CookieValue(name = COOKIE_SESSIONE, required = false) Long sessione) {
 
 		if(codUtente != null) {
 
 			Optional<Paziente> pazienteOpt = pazienteRepo.findById(codUtente);
 
-			Cookie c1 = new Cookie("paziente.cod_f", "");
-			Cookie c2 = new Cookie("paziente.id_sessione", "");
+			Cookie c1 = new Cookie(COOKIE_UTENTE, "");
+			Cookie c2 = new Cookie(COOKIE_SESSIONE, "");
 			c1.setMaxAge(1);
 			c2.setMaxAge(1);
 
@@ -99,7 +128,7 @@ public class UtenteController {
 	}
 
 	@PostMapping("/accedi/submit")
-	private String login_submit(Paziente paziente, HttpServletResponse response) {
+	private String accedi_submit(Paziente paziente, HttpServletResponse response, Model model) {
 
 		String action;
 		Optional<Paziente> pazienteOpt = pazienteRepo.findById(paziente.getCodiceFiscale());
@@ -118,16 +147,95 @@ public class UtenteController {
 				dbPaziente.setSessione(sessione);
 				pazienteRepo.save(dbPaziente);
 
-				// TODO: CODICE UTENTE, DAHSBOARD
-				response.addCookie(new Cookie("paziente.id_sessione", String.valueOf(sessione)));
-				action = "redirect:/paziente/home";
+				Cookie c1 = new Cookie(COOKIE_UTENTE, dbPaziente.getCodiceFiscale());
+				Cookie c2 = new Cookie(COOKIE_SESSIONE, String.valueOf(sessione));
+				c1.setPath("/paziente");
+				c2.setPath("/paziente");
+
+				response.addCookie(c1);
+				response.addCookie(c2);
+
+				model.addAttribute("title", "Login Area Pazienti");
+				model.addAttribute("message", "Login effettuato");
+				model.addAttribute("nextUrl", "/paziente/dashboard");
+				return "action_success";
 
 			} else
 				action = "redirect:/paziente/accedi?message=" + encode("Password errata") + "&type=danger";
 		}
 
-
 		return action;
+	}
+
+	@GetMapping("/dashboard")
+	private ModelAndView dashboard(@CookieValue(COOKIE_UTENTE) String codUtente, Alert alert) {
+
+		//noinspection OptionalGetWithoutIsPresent
+		Paziente paziente = pazienteRepo.findById(codUtente)
+				.get();
+
+		if(alert.getMessage() == null)
+			alert = null;
+		else if(alert.getType() == null)
+			alert.setType("primary");
+
+		ModelAndView mav = new ModelAndView("paziente/dashboard");
+		mav.addObject("paziente", paziente);
+		mav.addObject("alert", alert);
+
+		return mav;
+	}
+
+	@GetMapping("/prenota")
+	private ModelAndView prenota_view(@CookieValue(COOKIE_UTENTE) String codUtente) {
+
+		//noinspection OptionalGetWithoutIsPresent
+		Paziente paziente = pazienteRepo.findById(codUtente)
+				.get();
+
+		ModelAndView mav = new ModelAndView("paziente/prenota");
+		mav.addObject("paziente", paziente);
+		mav.addObject("prestazioni", prestazioneRepo.findAll());
+		mav.addObject("domani",
+				LocalDate.now()
+						.plusDays(1)
+						.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+
+		return mav;
+	}
+
+	@PostMapping("/prenota/submit")
+	private String prenota_submit(Integer idPrestazione, String data, String ora,
+			@CookieValue(COOKIE_UTENTE) String codUtente) {
+
+		//noinspection OptionalGetWithoutIsPresent
+		Paziente paziente = pazienteRepo.findById(codUtente)
+				.get();
+		//noinspection OptionalGetWithoutIsPresent
+		Prestazione prestazione = prestazioneRepo.findById(idPrestazione)
+				.get();
+
+		Timestamp timestamp;
+
+		try {
+			timestamp = new Timestamp(timestampFormatter.parse(data + " " + ora)
+					.getTime());
+		} catch(ParseException e) {
+			getLogger().error(e.getMessage(), e);
+			//noinspection SpringMVCViewInspection
+			return "redirect:/paziente/prenota?message=" + encode("Formato data errato") + "&type=danger";
+		}
+
+		Prenotazione prenotazione = new Prenotazione().setPaziente(paziente)
+				.setDataOra(timestamp)
+				.setPrestazione(prestazione);
+		prenotazioneRepo.save(prenotazione);
+
+		// TODO: INVIO EMAIL
+
+		//noinspection SpringMVCViewInspection
+		return "redirect:/paziente/dashboard?message=" + encode("Prenotazione effettuata") + "&type=success";
 	}
 
 }

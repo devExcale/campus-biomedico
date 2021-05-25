@@ -1,7 +1,7 @@
 package it.edu.faraday.campus_biomedico.models;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
@@ -9,11 +9,14 @@ import java.util.Set;
 public class Prenotazione {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PREN_SEQ_GEN")
+	@SequenceGenerator(name = "PREN_SEQ_GEN", sequenceName = "prenotazione_id_prenotazione_seq", allocationSize = 1)
 	@Column(name = "id_prenotazione")
 	private Integer id;
 
 	@Basic
-	private Date data;
+	@Column(name = "data")
+	private Timestamp dataOra;
 
 	@ManyToOne
 	@JoinColumn(name = "cod_p")
@@ -23,10 +26,10 @@ public class Prenotazione {
 	@JoinColumn(name = "id_prestazione")
 	private Prestazione prestazione;
 
+	// TODO: MEDICO PRENOTANTE
+
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "presidio",
-			joinColumns = @JoinColumn(name = "id_prenotazione"),
-			inverseJoinColumns = @JoinColumn(name = "cod_m"))
+	@JoinTable(name = "presidio", joinColumns = @JoinColumn(name = "id_prenotazione"), inverseJoinColumns = @JoinColumn(name = "cod_m"))
 	private Set<Medico> medici;
 
 	public Prenotazione() {
@@ -41,12 +44,12 @@ public class Prenotazione {
 		return this;
 	}
 
-	public Date getData() {
-		return data;
+	public Timestamp getDataOra() {
+		return dataOra;
 	}
 
-	public Prenotazione setData(Date data) {
-		this.data = data;
+	public Prenotazione setDataOra(Timestamp dataOra) {
+		this.dataOra = dataOra;
 		return this;
 	}
 

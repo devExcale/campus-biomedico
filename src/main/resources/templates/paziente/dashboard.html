@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
 		<title>Dashboard</title>
@@ -11,35 +11,31 @@
 		<div class="col-3"></div>
 
 		<div class="col">
-			<div class="jumbotron">
-				<h1 class="display-4"><b>Rosalind Franklin</b></h1>
-				<p class="lead">Campus Bio-Medico</p>
+			<div class="jumbotron" th:object="${paziente}">
+
+				<div th:replace="fragments/navbar :: navbar">
+					<a href="/home">Homepage</a>
+				</div>
+
+				<h1 class="display-4">
+					<b th:text="*{nome}">Nome</b> <b th:text="*{cognome}">Cognome</b>
+				</h1>
+				<p class="lead" th:text="*{codiceFiscale}">Codice Fiscale</p>
 				<hr class="my-4">
 
-				<!-- Area Pazienti -->
-				<div class="row">
-					<h1 class="d-inline my-auto col-8">Area Pazienti</h1>
-					<div class="d-flex justify-content-start align-items-center">
-						<a class="btn btn-lg btn-primary m-2" href="/paziente/accedi">Accedi</a>
-						<a class="btn btn-lg btn-primary m-2" href="/paziente/registrati">Registrati</a>
-					</div>
+				<div th:if="${alert != null}" th:utext="${alert.getRawHtml()}" th:remove="tag"></div>
+				<div class="form-group">
+					<label for="email">E-Mail</label>
+					<input type="email" id="email" class="form-control"
+							th:value="*{email}" value="example@domain.it"/>
+				</div>
+				<div class="form-group">
+					<label for="data_nascita">Data Nascita</label>
+					<input type="date" class="form-control" id="data_nascita" min=""
+							th:value="*{dataNascita}" value="01/01/1970"/>
 				</div>
 
-				<!-- Area Medici -->
-				<div class="row">
-					<h1 class="d-inline my-auto col-8">Area Medici</h1>
-					<div class="d-flex justify-content-start align-items-center">
-						<a class="btn btn-lg btn-primary m-2" href="/medico/accedi">Accedi</a>
-					</div>
-				</div>
-
-				<!-- Area Amministratori -->
-				<div class="row">
-					<h1 class="d-inline my-auto col-8">Area Amministratori</h1>
-					<div class="d-flex justify-content-start align-items-center">
-						<a class="btn btn-lg btn-primary m-2" href="/amministratore/accedi">Accedi</a>
-					</div>
-				</div>
+				<a class="btn btn-primary" href="/paziente/prenota">Prenota</a>
 
 			</div>
 		</div>
