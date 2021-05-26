@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Registrazione</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+				integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+				crossorigin="anonymous">
+	</head>
+	<body class="container-fluid row" th:object="${paziente}">
+
+		<div class="col-3"></div>
+		<div class="col">
+			<div class="jumbotron">
+
+				<div class="d-flex justify-content-between align-items-center">
+					<h1 class="display-4">Prenotazioni</h1>
+					<div th:replace="fragments/pazienti_navbar :: navbar">
+						<a class="btn btn-primary" href="#">Toolbar</a>
+					</div>
+				</div>
+				<p class="lead">
+					<b>Paziente:</b> <span th:text="*{nome}">Nome</span> <span th:text="*{cognome}">Cognome</span>
+				</p>
+				<hr class="my-4">
+
+				<table class="table table-striped bg-white">
+					<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Data</th>
+						<th scope="col">Ora</th>
+						<th scope="col">Prestazione</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="prenotazioni : ${paziente.prenotazioni}" th:object="${prenotazioni}">
+						<th scope="row" th:text="*{id}">1</th>
+						<td th:text="*{#dates.format(dataOra, 'd MMMM yyyy')}">26/05/2021</td>
+						<td th:text="*{#dates.format(dataOra, 'HH:mm')}">16:00</td>
+						<td>Analisi</td>
+					</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+		<div class="col-3"></div>
+
+	</body>
+	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+			integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+			crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+			crossorigin="anonymous"></script>
+	<script src="/init.js"></script>
+</html>

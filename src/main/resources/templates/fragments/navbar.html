@@ -7,7 +7,7 @@
 				integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
 				crossorigin="anonymous">
 	</head>
-	<body>
+	<body class="m-4">
 
 		<div th:fragment="navbar" class="btn-group">
 
@@ -15,10 +15,7 @@
 
 			<!-- Paziente -->
 			<div class="btn-group" role="group">
-				<button class="btn btn-primary dropdown-toggle"
-						data-toggle="dropdown">
-					Paziente
-				</button>
+				<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Paziente</button>
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="/paziente/accedi">Accedi</a>
 					<a class="dropdown-item" href="/paziente/registrati">Registrati</a>
@@ -27,10 +24,7 @@
 
 			<!-- Medico -->
 			<div class="btn-group" role="group">
-				<button class="btn btn-primary dropdown-toggle"
-						data-toggle="dropdown">
-					Medico
-				</button>
+				<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Medico</button>
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="/medico/accedi">Accedi</a>
 				</div>
@@ -38,10 +32,7 @@
 
 			<!-- Amministratore -->
 			<div class="btn-group" role="group">
-				<button class="btn btn-primary dropdown-toggle"
-						data-toggle="dropdown">
-					Amministratore
-				</button>
+				<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Amministratore</button>
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="/amministratore/accedi">Accedi</a>
 				</div>
@@ -50,4 +41,10 @@
 		</div>
 
 	</body>
+	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+			integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+			crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+			crossorigin="anonymous"></script>
 </html>

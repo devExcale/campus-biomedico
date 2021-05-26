@@ -46,9 +46,11 @@ public class UtenteController {
 	private PrestazioneRepository prestazioneRepo;
 
 	private final DateFormat timestampFormatter;
+	private final DateTimeFormatter dateTimeFormatter;
 
 	public UtenteController() {
 		timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	}
 
 	@GetMapping("/registrati")
@@ -190,7 +192,11 @@ public class UtenteController {
 	}
 
 	@GetMapping("/dashboard")
-	private ModelAndView dashboard(@CookieValue(COOKIE_UTENTE) String codUtente, Alert alert) {
+	private String dashboard(Model model, Alert alert,
+			@CookieValue(value = COOKIE_UTENTE, required = false) String codUtente) {
+
+		if(codUtente == null)
+			return "redirect:/paziente/accedi";
 
 		//noinspection OptionalGetWithoutIsPresent
 		Paziente paziente = pazienteRepo.findById(codUtente)
@@ -201,11 +207,10 @@ public class UtenteController {
 		else if(alert.getType() == null)
 			alert.setType("primary");
 
-		ModelAndView mav = new ModelAndView("paziente/dashboard");
-		mav.addObject("paziente", paziente);
-		mav.addObject("alert", alert);
+		model.addAttribute("paziente", paziente);
+		model.addAttribute("alert", alert);
 
-		return mav;
+		return "paziente/dashboard";
 	}
 
 	@PostMapping("/modifica/submit")
@@ -227,22 +232,20 @@ public class UtenteController {
 	}
 
 	@GetMapping("/prenota")
-	private ModelAndView prenota_view(@CookieValue(COOKIE_UTENTE) String codUtente) {
+	private String prenota_view(Model model, @CookieValue(COOKIE_UTENTE) String codUtente) {
 
 		//noinspection OptionalGetWithoutIsPresent
 		Paziente paziente = pazienteRepo.findById(codUtente)
 				.get();
 
-		ModelAndView mav = new ModelAndView("paziente/prenota");
-		mav.addObject("paziente", paziente);
-		mav.addObject("prestazioni", prestazioneRepo.findAll());
-		mav.addObject("domani",
+		model.addAttribute("paziente", paziente);
+		model.addAttribute("prestazioni", prestazioneRepo.findAll());
+		model.addAttribute("domani",
 				LocalDate.now()
 						.plusDays(1)
-						.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+						.format(dateTimeFormatter));
 
-
-		return mav;
+		return "paziente/prenotazione";
 	}
 
 	@PostMapping("/prenota/submit")
@@ -276,6 +279,22 @@ public class UtenteController {
 
 		//noinspection SpringMVCViewInspection
 		return "redirect:/paziente/dashboard?message=" + encode("Prenotazione effettuata") + "&type=success";
+	}
+
+	@GetMapping("/prenotazioni")
+	private String lista_prenotazioni(Model model,
+			@CookieValue(value = COOKIE_UTENTE, required = false) String codUtente) {
+
+		if(codUtente == null)
+			return "redirect:/paziente/dashboard";
+
+		//noinspection OptionalGetWithoutIsPresent
+		Paziente paziente = pazienteRepo.findById(codUtente)
+				.get();
+
+		model.addAttribute("paziente", paziente);
+
+		return "paziente/lista_prenotazioni";
 	}
 
 }
