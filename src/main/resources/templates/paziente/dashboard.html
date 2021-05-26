@@ -13,33 +13,91 @@
 		<div class="col">
 			<div class="jumbotron" th:object="${paziente}">
 
-				<div th:replace="fragments/navbar :: navbar">
-					<a href="/home">Homepage</a>
+				<div class="d-flex justify-content-between align-items-center">
+					<h1 class="display-4">Dashboard</h1>
+					<a href="#" th:replace="fragments/pazienti_navbar :: navbar">navbar</a>
 				</div>
-
-				<h1 class="display-4">
-					<b th:text="*{nome}">Nome</b> <b th:text="*{cognome}">Cognome</b>
-				</h1>
-				<p class="lead" th:text="*{codiceFiscale}">Codice Fiscale</p>
+				<p class="lead">Area pazienti</p>
 				<hr class="my-4">
 
 				<div th:if="${alert != null}" th:utext="${alert.getRawHtml()}" th:remove="tag"></div>
-				<div class="form-group">
-					<label for="email">E-Mail</label>
-					<input type="email" id="email" class="form-control"
-							th:value="*{email}" value="example@domain.it"/>
-				</div>
-				<div class="form-group">
-					<label for="data_nascita">Data Nascita</label>
-					<input type="date" class="form-control" id="data_nascita" min=""
-							th:value="*{dataNascita}" value="01/01/1970"/>
-				</div>
 
-				<a class="btn btn-primary" href="/paziente/prenota">Prenota</a>
+				<form action="/paziente/modifica/submit" method="post">
+					<div class="form-row">
+						<!-- Nome -->
+						<div class="form-group col">
+							<label for="nome">Nome</label>
+							<input type="text" id="nome" name="nome" class="form-control"
+									th:value="*{nome}" value="Emanuele" readonly/>
+						</div>
+						<!-- Cognome -->
+						<div class="form-group col">
+							<label for="cognome">Cognome</label>
+							<input type="text" id="cognome" name="cognome" class="form-control"
+									th:value="*{cognome}" value="Scaccia" readonly/>
+						</div>
+						<!-- Codice Fiscale -->
+						<div class="form-group col">
+							<label for="codiceFiscale">Codice Fiscale</label>
+							<input type="text" id="codiceFiscale" name="codiceFiscale" class="form-control"
+									th:value="*{codiceFiscale}" value="ABCDEF123GHI456J" readonly/>
+						</div>
+					</div>
+					<div class="form-row">
+						<!-- Data Nascita -->
+						<div class="form-group col-3">
+							<label for="dataNascita">Data Nascita</label>
+							<input type="date" class="form-control col" id="dataNascita" name="dataNascita"
+									th:value="*{dataNascita}" value="01/01/1970" readonly/>
+						</div>
+						<!-- Email -->
+						<div class="form-group col">
+							<label for="email">Email</label>
+							<input type="email" id="email" name="email" class="form-control"
+									th:value="*{email}" value="escaccia02@gmail.com"/>
+						</div>
+						<!-- Cellulare -->
+						<div class="form-group col">
+							<label for="cellulare">Cellulare</label>
+							<input type="text" id="cellulare" name="cellulare" class="form-control"
+									th:value="*{cellulare}" value="3334578961"/>
+						</div>
+					</div>
+					<div class="form-row">
+						<!-- Via Residenza -->
+						<div class="form-group col-7">
+							<label for="via">Via Residenza</label>
+							<input type="text" id="via" name="via" class="form-control"
+									th:value="*{viaResidenza}" value="Via Roma, 11"/>
+						</div>
+						<!-- Citta' -->
+						<div class="form-group col">
+							<label for="citta">Citt&agrave;</label>
+							<input type="text" id="citta" name="citta" class="form-control"
+									th:value="*{citta}" value="Roma"/>
+						</div>
+						<!-- CAP -->
+						<div class="form-group col">
+							<label for="cap">CAP</label>
+							<input type="text" id="cap" name="cap" class="form-control col"
+									max="5" th:value="*{cap}" value="00100"/>
+						</div>
+					</div>
+
+					<input type="submit" class="btn btn-primary" value="Modifica"/>
+					<input type="reset" class="btn btn-primary" value="Cancella"/>
+				</form>
 
 			</div>
 		</div>
 
 		<div class="col-3"></div>
 	</body>
+	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+			integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+			crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+			crossorigin="anonymous"></script>
+	<script src="/init.js"></script>
 </html>

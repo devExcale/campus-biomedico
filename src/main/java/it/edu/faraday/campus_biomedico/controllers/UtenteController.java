@@ -167,6 +167,28 @@ public class UtenteController {
 		return action;
 	}
 
+	@GetMapping("/logout")
+	private String logout(HttpServletResponse response, Model model,
+			@CookieValue(value = COOKIE_UTENTE, required = false) String codUtente) {
+
+		// ELIMINAZIONE COOKIE SESSIONE
+		response.addCookie(new Cookie(COOKIE_UTENTE, ""));
+		response.addCookie(new Cookie(COOKIE_SESSIONE, ""));
+
+		Optional.ofNullable(codUtente)
+				.flatMap(pazienteRepo::findById)
+				.ifPresent(paziente -> {
+					paziente.setSessione(null);
+					pazienteRepo.save(paziente);
+				});
+
+		model.addAttribute("title", "Logout pazienti");
+		model.addAttribute("message", "Logout effettuato correttamente");
+		model.addAttribute("nextUrl", "/home");
+
+		return "action_success";
+	}
+
 	@GetMapping("/dashboard")
 	private ModelAndView dashboard(@CookieValue(COOKIE_UTENTE) String codUtente, Alert alert) {
 
@@ -184,6 +206,24 @@ public class UtenteController {
 		mav.addObject("alert", alert);
 
 		return mav;
+	}
+
+	@PostMapping("/modifica/submit")
+	private String modifica_paziente(Paziente pazienteForm) {
+
+		//noinspection OptionalGetWithoutIsPresent
+		Paziente paziente = pazienteRepo.findById(pazienteForm.getCodiceFiscale())
+				.map(p -> p.setEmail(pazienteForm.getEmail())
+						.setCellulare(pazienteForm.getCellulare())
+						.setViaResidenza(pazienteForm.getViaResidenza())
+						.setCitta(pazienteForm.getCitta())
+						.setCap(pazienteForm.getCap()))
+				.get();
+
+		pazienteRepo.save(paziente);
+
+		//noinspection SpringMVCViewInspection
+		return "redirect:/paziente/accedi?message=" + encode("Paziente modificato con successo") + "&type=success";
 	}
 
 	@GetMapping("/prenota")

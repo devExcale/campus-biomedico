@@ -16,7 +16,7 @@
 
 					<div class="d-flex justify-content-between align-items-center">
 						<h1 class="display-4">Prenota</h1>
-						<div th:replace="fragments/navbar :: navbar"></div>
+						<div th:replace="fragments/pazienti_navbar :: navbar"></div>
 					</div>
 					<p class="lead">Prenota una visita</p>
 					<hr class="my-4">
@@ -45,7 +45,7 @@
 						</tr>
 						<tr>
 							<td>
-								<label for="data">Data Nascita</label>
+								<label for="data">Data</label>
 							</td>
 							<td>
 								<input type="date" id="data" name="data" class="form-control" th:min="${domani}"
