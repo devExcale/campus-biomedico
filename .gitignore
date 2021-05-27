@@ -30,3 +30,4 @@ build/
 ### Other ###
 /.mvn/
 mvnw*
+**/application.properties
