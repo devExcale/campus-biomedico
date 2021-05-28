@@ -11,18 +11,18 @@
 		<div class="col-3"></div>
 
 		<div class="col">
-			<div class="jumbotron" th:object="${paziente}">
+			<div class="jumbotron" th:object="${medico}">
 
 				<div class="d-flex justify-content-between align-items-center">
 					<h1 class="display-4">Dashboard</h1>
-					<a href="#" th:replace="fragments/navbar :: paziente">navbar</a>
+					<a href="#" th:replace="fragments/navbar :: medico">navbar</a>
 				</div>
-				<p class="lead">Area pazienti</p>
+				<p class="lead">Area medici</p>
 				<hr class="my-4">
 
 				<div th:if="${alert != null}" th:utext="${alert.getRawHtml()}" th:remove="tag"></div>
 
-				<form action="/paziente/modifica/submit" method="post">
+				<form action="/medico/modifica/submit" method="post">
 					<div class="form-row">
 						<!-- Nome -->
 						<div class="form-group col">
@@ -87,8 +87,6 @@
 					<input type="submit" class="btn btn-primary" value="Modifica"/>
 					<input type="reset" class="btn btn-primary" value="Cancella"/>
 				</form>
-
-				<!-- TODO: ANAMNESI -->
 
 			</div>
 		</div>

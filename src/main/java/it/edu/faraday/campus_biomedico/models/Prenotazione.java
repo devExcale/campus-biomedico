@@ -18,15 +18,17 @@ public class Prenotazione {
 	@Column(name = "data")
 	private Timestamp dataOra;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cod_p")
 	private Paziente paziente;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_prestazione")
 	private Prestazione prestazione;
 
-	// TODO: MEDICO PRENOTANTE
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "cod_m")
+	private Medico prenotante;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "presidio", joinColumns = @JoinColumn(name = "id_prenotazione"), inverseJoinColumns = @JoinColumn(name = "cod_m"))
@@ -68,6 +70,15 @@ public class Prenotazione {
 
 	public Prenotazione setPrestazione(Prestazione prestazione) {
 		this.prestazione = prestazione;
+		return this;
+	}
+
+	public Medico getMedicoPrenotante() {
+		return prenotante;
+	}
+
+	public Prenotazione setMedicoPrenotante(Medico prenotante) {
+		this.prenotante = prenotante;
 		return this;
 	}
 

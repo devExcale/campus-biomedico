@@ -31,6 +31,23 @@ public class Alert {
 		return this;
 	}
 
+	public Alert success(String message) {
+		this.message = message;
+		type = "success";
+		return this;
+	}
+
+	public Alert error(String message) {
+		this.message = message;
+		type = "danger";
+		return this;
+	}
+
+	public Alert primary() {
+		type = "primary";
+		return this;
+	}
+
 	public String getRawHtml() {
 		//noinspection StringBufferReplaceableByString
 		return new StringBuilder().append("<div class='alert alert-")

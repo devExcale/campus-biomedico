@@ -7,38 +7,42 @@
 				integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
 				crossorigin="anonymous">
 	</head>
-	<body class="container-fluid row" th:object="${paziente}">
+	<body class="container-fluid row" th:object="${medico}">
 
 		<div class="col-3"></div>
 		<div class="col">
 			<div class="jumbotron">
 
 				<div class="d-flex justify-content-between align-items-center">
-					<h1 class="display-4">Prenotazioni</h1>
-					<div th:replace="fragments/navbar :: paziente">
+					<h1 class="display-4">Lista Pazienti</h1>
+					<div th:replace="fragments/navbar :: medico">
 						<a class="btn btn-primary" href="#">Toolbar</a>
 					</div>
 				</div>
 				<p class="lead">
-					<b>Paziente:</b> <span th:text="*{nome}">Nome</span> <span th:text="*{cognome}">Cognome</span>
+					<b>Medico: </b> <span th:text="*{nome}">Emanuele</span> <span th:text="*{cognome}">Scaccia</span>
 				</p>
 				<hr class="my-4">
 
 				<table class="table table-striped bg-white">
 					<thead>
 					<tr>
-						<th scope="col">#</th>
-						<th scope="col">Data</th>
-						<th scope="col">Ora</th>
-						<th scope="col">Prestazione</th>
+						<th scope="col">Codice Fiscale</th>
+						<th scope="col">Nome</th>
+						<th scope="col">Data Nascita</th>
 					</tr>
 					</thead>
 					<tbody>
-					<tr th:each="prenotazioni : ${paziente.prenotazioni}" th:object="${prenotazioni}">
-						<th scope="row" th:text="*{id}">1</th>
-						<td th:text="*{#dates.format(dataOra, 'd MMMM yyyy')}">26/05/2021</td>
-						<td th:text="*{#dates.format(dataOra, 'HH:mm')}">16:00</td>
-						<td th:text="*{prestazione.denominazione}">Analisi</td>
+					<tr th:each="paziente : ${pazienti}" th:object="${paziente}">
+						<td>
+							<a th:text="*{codiceFiscale}" th:href="@{'/medico/pazienti/'+*{codiceFiscale}}"
+									href="#">SCCMNL02E11B715D
+							</a>
+						</td>
+						<td>
+							<span th:text="*{nome}">Emanuele</span> <span th:text="*{cognome}">Scaccia</span>
+						</td>
+						<td th:text="*{#dates.format(dataNascita, 'd MMMM yyyy')}">11/05/2002</td>
 					</tr>
 					</tbody>
 				</table>

@@ -8,6 +8,8 @@ import java.sql.Date;
 public class Anamnesi {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ANAM_SEQ_GEN")
+	@SequenceGenerator(name = "ANAM_SEQ_GEN", sequenceName = "anamnesi_id_anamnesi_seq", allocationSize = 1)
 	@Column(name = "id_anamnesi")
 	private Integer id;
 

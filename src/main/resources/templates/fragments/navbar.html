@@ -9,7 +9,7 @@
 	</head>
 	<body class="m-4">
 
-		<div th:fragment="navbar" class="btn-group">
+		<div th:fragment="main" class="btn-group">
 
 			<a class="btn btn-primary" href="/home">Homepage</a>
 
@@ -37,6 +37,50 @@
 					<a class="dropdown-item" href="/amministratore/accedi">Accedi</a>
 				</div>
 			</div>
+
+		</div>
+
+		<div th:fragment="paziente" class="btn-group">
+
+			<a class="btn btn-primary" href="/paziente/dashboard">Dashboard</a>
+
+			<div class="btn-group" role="group">
+				<button class="btn btn-primary dropdown-toggle"
+						data-toggle="dropdown">
+					Prestazioni
+				</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/paziente/prenota">Prenota</a>
+					<a class="dropdown-item" href="/paziente/prenotazioni">Visualizza</a>
+				</div>
+			</div>
+
+			<a class="btn btn-primary" href="/paziente/logout">Logout</a>
+
+		</div>
+
+		<div th:fragment="medico" class="btn-group">
+
+			<a class="btn btn-primary" href="/medico/dashboard">Dashboard</a>
+
+			<div class="btn-group" role="group">
+				<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Pazienti</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/medico/pazienti">Lista</a>
+					<a class="dropdown-item" href="/medico/prenotazioni">Prenotazioni</a>
+					<a class="dropdown-item" href="/medico/prenota">Prenota</a>
+				</div>
+			</div>
+
+			<div class="btn-group" role="group">
+				<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Corsi</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="#">Lista</a>
+					<a class="dropdown-item" href="#">Partecipazioni</a>
+				</div>
+			</div>
+
+			<a class="btn btn-primary" href="/medico/logout">Logout</a>
 
 		</div>
 

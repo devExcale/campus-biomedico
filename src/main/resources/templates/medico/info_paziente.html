@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Dashboard</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+				integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+				crossorigin="anonymous">
+	</head>
+	<body class="container-fluid row">
+		<div class="col-3"></div>
+
+		<div class="col">
+			<div class="jumbotron" th:object="${medico}">
+
+				<div class="d-flex justify-content-between align-items-center">
+					<h1 class="display-4">Paziente</h1>
+					<a href="#" th:replace="fragments/navbar :: medico">navbar</a>
+				</div>
+				<p class="lead">
+					<b>Medico: </b> <span th:text="*{nome}">Emanuele</span> <span th:text="*{cognome}">Scaccia</span>
+				</p>
+				<hr class="my-4">
+
+				<div th:if="${alert != null}" th:utext="${alert.getRawHtml()}" th:remove="tag"></div>
+				<div th:object="${paziente}">
+					<div class="form-row">
+						<!-- Nome -->
+						<div class="form-group col">
+							<label for="nome">Nome</label>
+							<input type="text" id="nome" name="nome" class="form-control bg-white"
+									th:value="*{nome}" value="Emanuele" readonly/>
+						</div>
+						<!-- Cognome -->
+						<div class="form-group col">
+							<label for="cognome">Cognome</label>
+							<input type="text" id="cognome" name="cognome" class="form-control bg-white"
+									th:value="*{cognome}" value="Scaccia" readonly/>
+						</div>
+						<!-- Codice Fiscale -->
+						<div class="form-group col">
+							<label for="codiceFiscale">Codice Fiscale</label>
+							<input type="text" id="codiceFiscale" name="codiceFiscale" class="form-control bg-white"
+									th:value="*{codiceFiscale}" value="ABCDEF123GHI456J" readonly/>
+						</div>
+					</div>
+					<div class="form-row">
+						<!-- Data Nascita -->
+						<div class="form-group col-3">
+							<label for="dataNascita">Data Nascita</label>
+							<input type="date" class="form-control col bg-white" id="dataNascita" name="dataNascita"
+									th:value="*{dataNascita}" value="01/01/1970" readonly/>
+						</div>
+						<!-- Email -->
+						<div class="form-group col">
+							<label for="email">Email</label>
+							<input type="email" id="email" name="email" class="form-control col bg-white"
+									th:value="*{email}" value="escaccia02@gmail.com" readonly/>
+						</div>
+						<!-- Cellulare -->
+						<div class="form-group col">
+							<label for="cellulare">Cellulare</label>
+							<input type="text" id="cellulare" name="cellulare" class="form-control col bg-white"
+									th:value="*{cellulare}" value="3334578961" readonly/>
+						</div>
+					</div>
+					<div class="form-row">
+						<!-- Via Residenza -->
+						<div class="form-group col-7">
+							<label for="viaResidenza">Via Residenza</label>
+							<input type="text" id="viaResidenza" name="viaResidenza" class="form-control col bg-white"
+									th:value="*{viaResidenza}" value="Via Roma, 11" readonly/>
+						</div>
+						<!-- Citta' -->
+						<div class="form-group col">
+							<label for="citta">Citt&agrave;</label>
+							<input type="text" id="citta" name="citta" class="form-control col bg-white"
+									th:value="*{citta}" value="Roma" readonly/>
+						</div>
+						<!-- CAP -->
+						<div class="form-group col">
+							<label for="cap">CAP</label>
+							<input type="text" id="cap" name="cap" class="form-control col bg-white"
+									th:value="*{cap}" value="00100" readonly/>
+						</div>
+					</div>
+					<div class="row m-2">
+						<button class="btn btn-primary col"
+								data-toggle="modal" data-target="#aggiungiAnamnesiModal">
+							Aggiungi anamnesi
+						</button>
+					</div>
+				</div>
+
+				<hr class="my-4">
+
+				<!-- TODO: ANAMNESI -->
+				<div class="container-fluid bg-light border pt-3">
+					<div class="row my-2" th:each="anamnesi : ${paziente.anamnesi}" th:object="${anamnesi}">
+						<div class="col-3 text-center">
+							<b th:text="*{#dates.format(data, 'd MMM yyyy')}">1 gen 1970</b>
+						</div>
+						<div class="col">
+							<p th:text="*{descrizione}">Descrizione anamnesi</p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="col-3"></div>
+
+		<div class="modal fade" id="aggiungiAnamnesiModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<form th:action="@{'/medico/pazienti/'+${paziente.codiceFiscale}+'/anamnesi'}" method="post">
+						<div class="modal-header">
+							<h5 class="modal-title">Aggiungi anamnesi</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group row">
+								<label for="data" class="col-2 col-form-label">Data</label>
+								<div class="col">
+									<input type="date" id="data" name="data" class="form-control"
+											th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+								</div>
+							</div>
+							<textarea id="descrizione" name="descrizione" class="form-control"></textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">&times;</button>
+							<input type="submit" class="btn btn-primary" value="&check;">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+			integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+			crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+			crossorigin="anonymous"></script>
+	<script src="/init.js"></script>
+</html>

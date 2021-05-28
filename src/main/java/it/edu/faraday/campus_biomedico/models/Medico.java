@@ -39,6 +39,10 @@ public class Medico {
 	@Basic
 	private String password;
 
+	@Basic
+	@Column(name = "id_sessione")
+	private Long sessione;
+
 	@ManyToMany(mappedBy = "medici", fetch = FetchType.LAZY)
 	private Set<Prenotazione> prenotazioni;
 
@@ -135,6 +139,15 @@ public class Medico {
 
 	public Medico setPassword(String password) {
 		this.password = password;
+		return this;
+	}
+
+	public Long getSessione() {
+		return sessione;
+	}
+
+	public Medico setSessione(Long sessione) {
+		this.sessione = sessione;
 		return this;
 	}
 

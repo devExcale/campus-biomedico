@@ -7,7 +7,7 @@
 				integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
 				crossorigin="anonymous">
 	</head>
-	<body class="container-fluid row" th:object="${paziente}">
+	<body class="container-fluid row" th:object="${medico}">
 
 		<div class="col-3"></div>
 		<div class="col">
@@ -15,30 +15,47 @@
 
 				<div class="d-flex justify-content-between align-items-center">
 					<h1 class="display-4">Prenotazioni</h1>
-					<div th:replace="fragments/navbar :: paziente">
+					<div th:replace="fragments/navbar :: medico">
 						<a class="btn btn-primary" href="#">Toolbar</a>
 					</div>
 				</div>
 				<p class="lead">
-					<b>Paziente:</b> <span th:text="*{nome}">Nome</span> <span th:text="*{cognome}">Cognome</span>
+					<b>Medico:</b> <span th:text="*{nome}">Nome</span> <span th:text="*{cognome}">Cognome</span>
 				</p>
 				<hr class="my-4">
+
+				<div th:if="${alert != null}" th:utext="${alert.getRawHtml()}" th:remove="tag"></div>
+
+				<form class="form-inline" method="get">
+					<label class="ml-auto m-2" for="data">Data</label>
+					<input type="date" class="form-control m-2" id="data" name="data"/>
+
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input m-2"
+								id="medicoPrenotante" name="medicoPrenotante">
+						<label for="medicoPrenotante" class="custom-control-label m-2">Prenotato da medico</label>
+					</div>
+
+					<input type="submit" class="btn btn-primary my-1" value="Cerca"/>
+				</form>
 
 				<table class="table table-striped bg-white">
 					<thead>
 					<tr>
-						<th scope="col">#</th>
 						<th scope="col">Data</th>
 						<th scope="col">Ora</th>
 						<th scope="col">Prestazione</th>
+						<th scope="col">Nome</th>
+						<th scope="col">Cognome</th>
 					</tr>
 					</thead>
 					<tbody>
-					<tr th:each="prenotazioni : ${paziente.prenotazioni}" th:object="${prenotazioni}">
-						<th scope="row" th:text="*{id}">1</th>
+					<tr th:each="prenotazione : ${prenotazioni}" th:object="${prenotazione}">
 						<td th:text="*{#dates.format(dataOra, 'd MMMM yyyy')}">26/05/2021</td>
 						<td th:text="*{#dates.format(dataOra, 'HH:mm')}">16:00</td>
 						<td th:text="*{prestazione.denominazione}">Analisi</td>
+						<td th:text="*{paziente.nome}">Nome</td>
+						<td th:text="*{paziente.cognome}">Cognome</td>
 					</tr>
 					</tbody>
 				</table>
