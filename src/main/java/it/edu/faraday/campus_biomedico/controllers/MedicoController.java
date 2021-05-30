@@ -11,16 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Optional;
 
-import static it.edu.faraday.campus_biomedico.CampusBiomedicoApplication.encode;
+import static it.edu.faraday.campus_biomedico.CampusBiomedicoApplication.*;
 
 @Controller
 @RequestMapping("/medico")
@@ -42,16 +40,6 @@ public class MedicoController {
 
 	@Autowired
 	private AnamnesiRepository anamnesiRepo;
-
-	private final DateFormat timestampFormatter;
-	private final DateFormat dateFormatter;
-	private final DateTimeFormatter dateTimeFormatter;
-
-	public MedicoController() {
-		timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	}
 
 	@GetMapping("/accedi")
 	private String accedi_view(Alert alert, Model model,
@@ -214,43 +202,44 @@ public class MedicoController {
 	@GetMapping("prenotazioni")
 	private String lista_prenotazioni(Model model, @RequestParam(required = false) Date data,
 			@RequestParam(required = false, defaultValue = "false") Boolean medicoPrenotante,
-			@CookieValue(value = COOKIE_MEDICO) String codUtente) {
+			@CookieValue(value = COOKIE_MEDICO, required = false) String codUtente) {
 
 		if(codUtente == null)
 			return "redirect:/medico/accedi";
-
-		//		if(data != null)
-		//			try {
-		//				date = dateFormatter.parse(data);
-		//			} catch(ParseException e) {
-		//				model.addAttribute("alert", new Alert().error("Data invalida"));
-		//				model.addAttribute("prenotazioni",
-		//						medicoPrenotante ? prenotazioneRepo.findAllByMedicoPrenotante() : prenotazioneRepo.findAll());
-		//			}
 
 		//noinspection OptionalGetWithoutIsPresent
 		Medico medico = medicoRepo.findById(codUtente)
 				.get();
 
 		Iterable<Prenotazione> prenotazioni;
-		if(data != null)
+		if(data != null) {
+			Date domani = new Date(data.getTime() + 86339999L);
 			if(medicoPrenotante)
-				prenotazioni = prenotazioneRepo.findAllByDataAndMedicoPrenotante(data);
+				prenotazioni = prenotazioneRepo.findAllByDataAndMedicoPrenotante(data, domani);
 			else
-				prenotazioni = prenotazioneRepo.findAllByData(data);
-		else if(medicoPrenotante)
+				prenotazioni = prenotazioneRepo.findAllByData(data, domani);
+		} else if(medicoPrenotante)
 			prenotazioni = prenotazioneRepo.findAllByMedicoPrenotante();
 		else
 			prenotazioni = prenotazioneRepo.findAll();
 
+		Iterator<Prenotazione> i = prenotazioni.iterator();
+		if(!i.hasNext())
+			model.addAttribute("alert", new Alert().error("Nessuna prenotazione trovata"));
+
 		model.addAttribute("prenotazioni", prenotazioni);
 		model.addAttribute("medico", medico);
+		model.addAttribute("data", data);
+		model.addAttribute("medicoPrenotante", medicoPrenotante);
 
 		return "medico/lista_prenotazioni";
 	}
 
 	@GetMapping("/prenota")
-	private String prenota_view(Model model, @CookieValue(COOKIE_MEDICO) String codUtente) {
+	private String prenota_view(Model model, @CookieValue(value = COOKIE_MEDICO, required = false) String codUtente) {
+
+		if(codUtente == null)
+			return "redirect:/medico/accedi";
 
 		//noinspection OptionalGetWithoutIsPresent
 		Medico medico = medicoRepo.findById(codUtente)
@@ -261,14 +250,17 @@ public class MedicoController {
 		model.addAttribute("domani",
 				LocalDate.now()
 						.plusDays(1)
-						.format(dateTimeFormatter));
+						.format(DATE_FORMATTER));
 
 		return "medico/prenotazione";
 	}
 
 	@PostMapping("/prenota/submit")
 	private String prenota_submit(Integer idPrestazione, String data, String ora, String codiceFiscale,
-			@CookieValue(COOKIE_MEDICO) String codUtente) {
+			@CookieValue(value = COOKIE_MEDICO, required = false) String codUtente) {
+
+		if(codUtente == null)
+			return "redirect:/medico/accedi";
 
 		//noinspection OptionalGetWithoutIsPresent
 		Medico medico = medicoRepo.findById(codUtente)
@@ -283,7 +275,7 @@ public class MedicoController {
 		Timestamp timestamp;
 
 		try {
-			timestamp = new Timestamp(timestampFormatter.parse(data + " " + ora)
+			timestamp = new Timestamp(TIMESTAMP_FORMATTER.parse(data + " " + ora)
 					.getTime());
 		} catch(ParseException e) {
 			//noinspection SpringMVCViewInspection

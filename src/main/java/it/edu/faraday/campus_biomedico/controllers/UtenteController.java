@@ -17,23 +17,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 
-import static it.edu.faraday.campus_biomedico.CampusBiomedicoApplication.encode;
-import static it.edu.faraday.campus_biomedico.CampusBiomedicoApplication.getLogger;
+import static it.edu.faraday.campus_biomedico.CampusBiomedicoApplication.*;
 
 @Controller
 @RequestMapping("/paziente")
 public class UtenteController {
 
 	private static final String COOKIE_UTENTE = "paziente.cod";
-	private static final String COOKIE_SESSIONE = "paziente.id_sessione";
 
 	@Autowired
 	private PazienteRepository pazienteRepo;
@@ -43,14 +38,6 @@ public class UtenteController {
 
 	@Autowired
 	private PrestazioneRepository prestazioneRepo;
-
-	private final DateFormat timestampFormatter;
-	private final DateTimeFormatter dateTimeFormatter;
-
-	public UtenteController() {
-		timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	}
 
 	@GetMapping("/registrati")
 	private String registrati_view(Alert alert, Model model) {
@@ -81,40 +68,11 @@ public class UtenteController {
 	}
 
 	@GetMapping("/accedi")
-	private String accedi_view(Alert alert, Model model, HttpServletResponse response,
-			@CookieValue(name = COOKIE_UTENTE, required = false) String codUtente,
-			@CookieValue(name = COOKIE_SESSIONE, required = false) Long sessione) {
+	private String accedi_view(Alert alert, Model model,
+			@CookieValue(name = COOKIE_UTENTE, required = false) String codUtente) {
 
-		if(codUtente != null) {
-
-			Optional<Paziente> pazienteOpt = pazienteRepo.findById(codUtente);
-
-			Cookie c1 = new Cookie(COOKIE_UTENTE, "");
-			Cookie c2 = new Cookie(COOKIE_SESSIONE, "");
-			c1.setMaxAge(1);
-			c2.setMaxAge(1);
-
-			if(!pazienteOpt.isPresent()) {
-
-				response.addCookie(c1);
-				response.addCookie(c2);
-
-			} else {
-
-				Paziente paziente = pazienteOpt.get();
-				if(!sessione.equals(paziente.getSessione())) {
-
-					response.addCookie(c1);
-					response.addCookie(c2);
-					alert.setType("danger");
-					alert.setMessage("Sessione invalida");
-
-				} else
-					return "redirect:dashboard";
-
-			}
-
-		}
+		if(codUtente != null)
+			return "redirect:dashboard";
 
 		if(alert.getMessage() == null)
 			alert = null;
@@ -146,18 +104,14 @@ public class UtenteController {
 				dbPaziente.setSessione(sessione);
 				pazienteRepo.save(dbPaziente);
 
-				Cookie c1 = new Cookie(COOKIE_UTENTE, dbPaziente.getCodiceFiscale());
-				Cookie c2 = new Cookie(COOKIE_SESSIONE, String.valueOf(sessione));
-				c1.setPath("/paziente");
-				c2.setPath("/paziente");
-
-				response.addCookie(c1);
-				response.addCookie(c2);
+				Cookie cookie = new Cookie(COOKIE_UTENTE, dbPaziente.getCodiceFiscale());
+				cookie.setPath("/paziente");
+				response.addCookie(cookie);
 
 				model.addAttribute("title", "Login Area Pazienti");
 				model.addAttribute("message", "Login effettuato");
 				model.addAttribute("nextUrl", "/paziente/dashboard");
-				return "action_success";
+				action = "action_success";
 
 			} else
 				action = "redirect:/paziente/accedi?message=" + encode("Password errata") + "&type=danger";
@@ -171,8 +125,9 @@ public class UtenteController {
 			@CookieValue(value = COOKIE_UTENTE, required = false) String codUtente) {
 
 		// ELIMINAZIONE COOKIE SESSIONE
-		response.addCookie(new Cookie(COOKIE_UTENTE, ""));
-		response.addCookie(new Cookie(COOKIE_SESSIONE, ""));
+		Cookie cookie = new Cookie(COOKIE_UTENTE, "");
+		cookie.setMaxAge(1);
+		response.addCookie(cookie);
 
 		Optional.ofNullable(codUtente)
 				.flatMap(pazienteRepo::findById)
@@ -211,7 +166,11 @@ public class UtenteController {
 	}
 
 	@PostMapping("/modifica/submit")
-	private String modifica_paziente(Paziente pazienteForm) {
+	private String modifica_paziente(Paziente pazienteForm,
+			@CookieValue(value = COOKIE_UTENTE, required = false) String codUtente) {
+
+		if(codUtente == null)
+			return "redirect:/paziente/accedi";
 
 		//noinspection OptionalGetWithoutIsPresent
 		Paziente paziente = pazienteRepo.findById(pazienteForm.getCodiceFiscale())
@@ -229,7 +188,10 @@ public class UtenteController {
 	}
 
 	@GetMapping("/prenota")
-	private String prenota_view(Model model, @CookieValue(COOKIE_UTENTE) String codUtente) {
+	private String prenota_view(Model model, @CookieValue(value = COOKIE_UTENTE, required = false) String codUtente) {
+
+		if(codUtente == null)
+			return "redirect:/paziente/accedi";
 
 		//noinspection OptionalGetWithoutIsPresent
 		Paziente paziente = pazienteRepo.findById(codUtente)
@@ -240,14 +202,17 @@ public class UtenteController {
 		model.addAttribute("domani",
 				LocalDate.now()
 						.plusDays(1)
-						.format(dateTimeFormatter));
+						.format(DATE_FORMATTER));
 
 		return "paziente/prenotazione";
 	}
 
 	@PostMapping("/prenota/submit")
 	private String prenota_submit(Integer idPrestazione, String data, String ora,
-			@CookieValue(COOKIE_UTENTE) String codUtente) {
+			@CookieValue(value = COOKIE_UTENTE, required = false) String codUtente) {
+
+		if(codUtente == null)
+			return "redirect:/paziente/accedi";
 
 		//noinspection OptionalGetWithoutIsPresent
 		Paziente paziente = pazienteRepo.findById(codUtente)
@@ -256,19 +221,17 @@ public class UtenteController {
 		Prestazione prestazione = prestazioneRepo.findById(idPrestazione)
 				.get();
 
-		Timestamp timestamp;
+		Date dataOra;
 
 		try {
-			timestamp = new Timestamp(timestampFormatter.parse(data + " " + ora)
-					.getTime());
+			dataOra = TIMESTAMP_FORMATTER.parse(data + " " + ora);
 		} catch(ParseException e) {
-			getLogger().error(e.getMessage(), e);
 			//noinspection SpringMVCViewInspection
 			return "redirect:/paziente/prenota?message=" + encode("Formato data errato") + "&type=danger";
 		}
 
 		Prenotazione prenotazione = new Prenotazione().setPaziente(paziente)
-				.setDataOra(timestamp)
+				.setDataOra(dataOra)
 				.setPrestazione(prestazione);
 		prenotazioneRepo.save(prenotazione);
 

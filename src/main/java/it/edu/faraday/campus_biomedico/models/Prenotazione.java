@@ -1,7 +1,7 @@
 package it.edu.faraday.campus_biomedico.models;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -16,7 +16,7 @@ public class Prenotazione {
 
 	@Basic
 	@Column(name = "data")
-	private Timestamp dataOra;
+	private Date dataOra;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cod_p")
@@ -31,7 +31,9 @@ public class Prenotazione {
 	private Medico prenotante;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "presidio", joinColumns = @JoinColumn(name = "id_prenotazione"), inverseJoinColumns = @JoinColumn(name = "cod_m"))
+	@JoinTable(name = "presidio",
+			joinColumns = @JoinColumn(name = "id_prenotazione"),
+			inverseJoinColumns = @JoinColumn(name = "cod_m"))
 	private Set<Medico> medici;
 
 	public Prenotazione() {
@@ -46,11 +48,11 @@ public class Prenotazione {
 		return this;
 	}
 
-	public Timestamp getDataOra() {
+	public Date getDataOra() {
 		return dataOra;
 	}
 
-	public Prenotazione setDataOra(Timestamp dataOra) {
+	public Prenotazione setDataOra(Date dataOra) {
 		this.dataOra = dataOra;
 		return this;
 	}

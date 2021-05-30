@@ -28,11 +28,12 @@
 
 				<form class="form-inline" method="get">
 					<label class="ml-auto m-2" for="data">Data</label>
-					<input type="date" class="form-control m-2" id="data" name="data"/>
+					<input type="date" class="form-control m-2" id="data" name="data"
+							th:value="${#dates.format(data, 'yyyy-MM-dd')}"/>
 
 					<div class="custom-control custom-checkbox">
 						<input type="checkbox" class="custom-control-input m-2"
-								id="medicoPrenotante" name="medicoPrenotante">
+								id="medicoPrenotante" name="medicoPrenotante" th:value="${medicoPrenotante}"/>
 						<label for="medicoPrenotante" class="custom-control-label m-2">Prenotato da medico</label>
 					</div>
 
