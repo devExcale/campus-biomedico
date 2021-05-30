@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Prenota</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+				integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+				crossorigin="anonymous">
+	</head>
+	<body class="container-fluid row">
+
+		<div class="col-3"></div>
+		<div class="col">
+			<div class="jumbotron">
+
+				<div class="d-flex justify-content-between align-items-center">
+					<h1 class="display-4">Prenota</h1>
+					<div th:replace="fragments/navbar :: medico"></div>
+				</div>
+				<p class="lead" th:object="${medico}">
+					<b>Medico: </b> <span th:text="*{nome}">Emanuele</span> <span
+						th:text="*{cognome}">Scaccia</span></p>
+				<hr class="my-4">
+
+				<form action="/medico/prenota/submit" method="post">
+					<table class="table table-borderless">
+						<tr>
+							<td>
+								<label for="codiceFiscale">Codice Fiscale</label>
+							</td>
+							<td>
+								<input type="text" minlength="16" maxlength="16" class="form-control"
+										id="codiceFiscale" name="codiceFiscale" required/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="idPrestazione">Prestazione</label>
+							</td>
+							<td>
+								<select name="idPrestazione" id="idPrestazione" class="custom-select">
+									<option th:each="prestazione : ${prestazioni}" th:object="${prestazione}"
+											th:value="*{id}" th:text="*{denominazione}"></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="data">Data</label>
+							</td>
+							<td>
+								<input type="date" id="data" name="data" class="form-control" th:min="${domani}"
+										required/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="ora">Ora</label>
+							</td>
+							<td>
+								<input type="time" id="ora" name="ora" class="form-control" required/>
+							</td>
+						</tr>
+					</table>
+
+					<div class="d-flex justify-content-start">
+						<input class="btn btn-primary btn-lg m-1"
+								type="submit" value="Prenota"/>
+						<input class="btn btn-primary btn-lg m-1"
+								type="reset" value="Cancella"/>
+					</div>
+
+				</form>
+			</div>
+		</div>
+		<div class="col-3"></div>
+
+	</body>
+	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+			integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+			crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+			crossorigin="anonymous"></script>
+	<script src="/init.js"></script>
+</html>

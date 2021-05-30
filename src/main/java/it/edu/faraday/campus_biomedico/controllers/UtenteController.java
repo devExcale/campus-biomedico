@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -54,18 +53,16 @@ public class UtenteController {
 	}
 
 	@GetMapping("/registrati")
-	private ModelAndView registrati_view(Alert alert) {
-
-		ModelAndView mav = new ModelAndView("paziente/registrazione");
+	private String registrati_view(Alert alert, Model model) {
 
 		if(alert.getMessage() == null)
 			alert = null;
 		else if(alert.getType() == null)
 			alert.setType("primary");
 
-		mav.addObject("alert", alert);
+		model.addAttribute("alert", alert);
 
-		return mav;
+		return "paziente/registrazione";
 	}
 
 	@SuppressWarnings("SpringMVCViewInspection")
