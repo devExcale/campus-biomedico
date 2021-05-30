@@ -129,13 +129,6 @@ public class UtenteController {
 		cookie.setMaxAge(1);
 		response.addCookie(cookie);
 
-		Optional.ofNullable(codUtente)
-				.flatMap(pazienteRepo::findById)
-				.ifPresent(paziente -> {
-					paziente.setSessione(null);
-					pazienteRepo.save(paziente);
-				});
-
 		model.addAttribute("title", "Logout pazienti");
 		model.addAttribute("message", "Logout effettuato correttamente");
 		model.addAttribute("nextUrl", "/home");

@@ -98,13 +98,6 @@ public class MedicoController {
 		cookie.setMaxAge(1);
 		response.addCookie(cookie);
 
-		Optional.ofNullable(codUtente)
-				.flatMap(medicoRepo::findById)
-				.ifPresent(medico -> {
-					medico.setSessione(null);
-					medicoRepo.save(medico);
-				});
-
 		model.addAttribute("title", "Logout medici");
 		model.addAttribute("message", "Logout effettuato correttamente");
 		model.addAttribute("nextUrl", "/home");
