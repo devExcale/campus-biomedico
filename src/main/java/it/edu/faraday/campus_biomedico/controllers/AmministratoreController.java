@@ -31,7 +31,7 @@ public class AmministratoreController {
 			@CookieValue(name = COOKIE_ADMIN, required = false) String codUtente) {
 
 		if(codUtente != null)
-			return "redirect:/medico/dashboard";
+			return "redirect:/admin/dashboard";
 
 		if(alert.getMessage() == null)
 			alert = null;
@@ -50,7 +50,7 @@ public class AmministratoreController {
 		Optional<Amministratore> adminOpt = adminRepo.findById(formAdmin.getCodiceFiscale());
 
 		if(!adminOpt.isPresent())
-			action = "redirect:/medico/accedi?message=" + encode("Codice medico inesistente") + "&type=danger";
+			action = "redirect:/admin/accedi?message=" + encode("Codice amministratore inesistente") + "&type=danger";
 		else {
 
 			Amministratore dbAdmin = adminOpt.get();
