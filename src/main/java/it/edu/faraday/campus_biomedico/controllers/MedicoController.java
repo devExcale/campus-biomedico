@@ -90,8 +90,7 @@ public class MedicoController {
 	}
 
 	@GetMapping("/logout")
-	private String logout(HttpServletResponse response, Model model,
-			@CookieValue(value = COOKIE_MEDICO, required = false) String codUtente) {
+	private String logout(HttpServletResponse response, Model model) {
 
 		// ELIMINAZIONE COOKIE SESSIONE
 		Cookie cookie = new Cookie(COOKIE_MEDICO, "");

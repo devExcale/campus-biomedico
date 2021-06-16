@@ -42,10 +42,6 @@ public class Paziente {
 	@Basic(optional = false)
 	private String password;
 
-	@Basic(optional = true)
-	@Column(name = "id_sessione")
-	private Long sessione;
-
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "paziente")
 	private List<Anamnesi> anamnesi;
 
@@ -142,15 +138,6 @@ public class Paziente {
 
 	public Paziente setPassword(String password) {
 		this.password = password;
-		return this;
-	}
-
-	public Long getSessione() {
-		return sessione;
-	}
-
-	public Paziente setSessione(Long sessione) {
-		this.sessione = sessione;
 		return this;
 	}
 

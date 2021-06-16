@@ -99,11 +99,6 @@ public class UtenteController {
 
 			if(password.equals(paziente.getPassword())) {
 
-				long sessione = System.currentTimeMillis();
-
-				dbPaziente.setSessione(sessione);
-				pazienteRepo.save(dbPaziente);
-
 				Cookie cookie = new Cookie(COOKIE_UTENTE, dbPaziente.getCodiceFiscale());
 				cookie.setPath("/paziente");
 				response.addCookie(cookie);
@@ -121,8 +116,7 @@ public class UtenteController {
 	}
 
 	@GetMapping("/logout")
-	private String logout(HttpServletResponse response, Model model,
-			@CookieValue(value = COOKIE_UTENTE, required = false) String codUtente) {
+	private String logout(HttpServletResponse response, Model model) {
 
 		// ELIMINAZIONE COOKIE SESSIONE
 		Cookie cookie = new Cookie(COOKIE_UTENTE, "");
